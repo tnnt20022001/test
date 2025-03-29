@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web nhập liệu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 100px;
+            background-color: rgb(248, 248, 248);
+        }
+        .upload-container {
+            border: 2px dashed #ccc;
+            padding: 10%;
+            width: 50%;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .upload-container.dragover {
+            border-color: #000;
+        }
+        p {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+        img {
+            margin-top: 10px;
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 20px; color: #444; font-weight: bold;">Trích xuất dữ liệu từ hình ảnh</h1>
+    <div class="upload-container" id="drop-area">
+        <input type="file" id="fileInput" accept="image/*">
+        <p>Kéo thả hình ảnh vào đây hoặc nhấn để chọn tệp</p>
+        <img id="preview" src="" alt="Hình xem trước" style="display:none;">
+    </div>
+    <script>
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("fileInput");
+        const preview = document.getElementById("preview");
+
+        dropArea.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropArea.classList.add("dragover");
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("dragover");
+        });
+
+        dropArea.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropArea.classList.remove("dragover");
+            const file = event.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file && file.type.startsWith("image")) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
