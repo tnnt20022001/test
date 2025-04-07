@@ -69,6 +69,17 @@
             handleFile(file);
         });
 
+        window.addEventListener("paste", (event) => {
+            const items = event.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.startsWith("image")) {
+                    const file = items[i].getAsFile();
+                    handleFile(file);
+                    break;
+                }
+            }
+        });
+        
         function handleFile(file) {
             if (file && file.type.startsWith("image")) {
                 const reader = new FileReader();
